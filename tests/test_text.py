@@ -1,5 +1,5 @@
 import pytest
-from pycrdt import Array, Doc, Map, Text, Transaction
+from datalayer_pycrdt import Array, Doc, Map, Text
 
 hello = "Hello"
 world = ", World"

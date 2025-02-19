@@ -4,8 +4,8 @@ from functools import partial
 
 import pytest
 from anyio import create_task_group, fail_after, sleep, to_thread
-from pycrdt import Array, Doc, Map, Text
-from pycrdt._base import hash_origin
+from datalayer_pycrdt import Array, Doc, Map, Text
+from datalayer_pycrdt._base import hash_origin
 
 if sys.version_info < (3, 11):
     from exceptiongroup import ExceptionGroup  # pragma: no cover

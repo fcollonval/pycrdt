@@ -2,7 +2,7 @@ import json
 from functools import partial
 
 import pytest
-from pycrdt import Array, Doc, Map, Text, Transaction
+from datalayer_pycrdt import Array, Doc, Map, Text, Transaction
 
 
 def callback(events, event):
