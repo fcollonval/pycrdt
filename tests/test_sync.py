@@ -8,7 +8,7 @@ from datalayer_pycrdt import (
     create_update_message,
     handle_sync_message,
 )
-from pycrdt._sync import Decoder, write_var_uint
+from datalayer_pycrdt._sync import Decoder, write_var_uint
 
 pytestmark = pytest.mark.anyio
 
