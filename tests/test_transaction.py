@@ -1,3 +1,4 @@
+import platform
 import sys
 import time
 from functools import partial
@@ -11,6 +12,9 @@ if sys.version_info < (3, 11):
     from exceptiongroup import ExceptionGroup  # pragma: no cover
 
 pytestmark = pytest.mark.anyio
+
+
+IS_CPYTHON = platform.python_implementation() == "CPython"
 
 
 def test_callback_transaction():
@@ -97,14 +101,10 @@ def test_origin():
             assert doc1._origins.get(hashed_origin) == origin0
         assert len(doc0._origins) == 1
         assert doc0._origins.get(hash_origin(origin0)) == origin0
-        # Convolution to check the internal counter is decreased - needed for pypy
-        count = sys.getrefcount(txn1)
         del txn1
-        assert doc1._origins._counter[hashed_origin] == 0 if count == 1 else 1
-    # Convolution to check the internal counter is decreased - needed for pypy
-    count = sys.getrefcount(txn0)
+        assert (doc1._origins.get(hashed_origin) is None) is (True if IS_CPYTHON else False)
     del txn0
-    assert doc0._origins._counter[hashed_origin] == 0 if count == 1 else 1
+    assert (doc1._origins.get(hashed_origin) is None) is (True if IS_CPYTHON else False)
 
     with doc0.transaction(origin=123):
         with doc0.transaction(origin=123):
