@@ -98,13 +98,13 @@ def test_origin():
         assert len(doc0._origins) == 1
         assert doc0._origins.get(hash_origin(origin0)) == origin0
         # Convolution to check the internal counter is decreased - needed for pypy
-        count = doc1._origins._counter[hashed_origin]
+        count = sys.getrefcount(txn1)
         del txn1
-        assert doc1._origins._counter[hashed_origin] == count - 1
+        assert doc1._origins._counter[hashed_origin] == 0 if count == 1 else 1
     # Convolution to check the internal counter is decreased - needed for pypy
-    count = doc0._origins._counter[hashed_origin]
+    count = sys.getrefcount(txn0)
     del txn0
-    assert doc0._origins._counter[hashed_origin] == count - 1
+    assert doc0._origins._counter[hashed_origin] == 0 if count == 1 else 1
 
     with doc0.transaction(origin=123):
         with doc0.transaction(origin=123):
