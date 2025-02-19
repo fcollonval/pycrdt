@@ -97,10 +97,14 @@ def test_origin():
             assert doc1._origins.get(hashed_origin) == origin0
         assert len(doc0._origins) == 1
         assert doc0._origins.get(hash_origin(origin0)) == origin0
+        # Convolution to check the internal counter is decreased - needed for pypy
+        count = doc1._origins._counter[hashed_origin]
         del txn1
-        assert len(doc1._origins) == 0
+        assert doc1._origins._counter[hashed_origin] == count - 1
+    # Convolution to check the internal counter is decreased - needed for pypy
+    count = doc0._origins._counter[hashed_origin]
     del txn0
-    assert len(doc0._origins) == 0
+    assert doc0._origins._counter[hashed_origin] == count - 1
 
     with doc0.transaction(origin=123):
         with doc0.transaction(origin=123):
